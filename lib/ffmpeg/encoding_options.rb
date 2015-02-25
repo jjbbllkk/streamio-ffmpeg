@@ -79,6 +79,10 @@ module FFMPEG
     def convert_audio_channels(value)
       "-ac #{value}"
     end
+    
+    def convert_audio_cutoff(value)
+      "-cutoff #{value}"
+    end
 
     def convert_video_max_bitrate(value)
       "-maxrate #{k_format(value)}"
@@ -128,12 +132,16 @@ module FFMPEG
       value ? "-vframes 1 -f image2" : ""
     end
 
-    def convert_x264_vprofile(value)
-      "-vprofile #{value}"
+    def convert_profile(value)
+      "-profile:v #{value}"
     end
 
     def convert_x264_preset(value)
-      "-preset #{value}"
+      "-preset:v #{value}"
+    end
+    
+    def convert_deinterlace(value)
+      "-vf yadif=#{value}"
     end
 
     def convert_watermark(value)
