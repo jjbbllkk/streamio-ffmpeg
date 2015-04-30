@@ -18,6 +18,7 @@ module FFMPEG
 
       params_string = params.join(" ")
       params_string << " #{convert_aspect(calculate_aspect)}" if calculate_aspect?
+      #puts "THE COW SAYS : #{params_string}\n\n"
       params_string
     end
 
@@ -67,6 +68,10 @@ module FFMPEG
     def convert_audio_codec(value)
       "-acodec #{value}"
     end
+    
+    def convert_audio_cutoff(value)
+      "-cutoff #{value}"
+    end
 
     def convert_audio_bitrate(value)
       "-b:a #{k_format(value)}"
@@ -78,10 +83,6 @@ module FFMPEG
 
     def convert_audio_channels(value)
       "-ac #{value}"
-    end
-    
-    def convert_audio_cutoff(value)
-      "-cutoff #{value}"
     end
 
     def convert_video_max_bitrate(value)
@@ -142,23 +143,6 @@ module FFMPEG
     
     def convert_deinterlace(value)
       "-vf yadif=#{value}"
-    end
-
-    def convert_watermark(value)
-      "-i #{value}"
-    end
-
-    def convert_watermark_filter(value)
-      case value[:position].to_s
-      when "LT"
-        "-filter_complex 'scale=#{self[:resolution]},overlay=x=#{value[:padding_x]}:y=#{value[:padding_y]}'"
-      when "RT"
-        "-filter_complex 'scale=#{self[:resolution]},overlay=x=main_w-overlay_w-#{value[:padding_x]}:y=#{value[:padding_y]}'"
-      when "LB"
-        "-filter_complex 'scale=#{self[:resolution]},overlay=x=#{value[:padding_x]}:y=main_h-overlay_h-#{value[:padding_y]}'"
-      when "RB"
-        "-filter_complex 'scale=#{self[:resolution]},overlay=x=main_w-overlay_w-#{value[:padding_x]}:y=main_h-overlay_h-#{value[:padding_y]}'"
-      end  
     end
 
     def convert_custom(value)
